@@ -13,6 +13,10 @@ LAST_USED_ID=0
 # User passes filename to delete as first argument
 fileToDeletePath=$(pwd)/$1
 
+# We need to add information about deleted file to log file
+# Log file: /home/<username>/.trash/.trash.log
+logFilePath=$trashDirectoryPath/.trash.log
+
 # -e file checks if file exists
 if [ ! -e $fileToDeletePath ]; then
   echo "No such file: "$fileToDeletePath
@@ -37,6 +41,11 @@ echo $CURRENT_FILE_ID > $lastUsedIdPath
 
 # Create hard link to removing file
 ln $fileToDeletePath $trashDirectoryPath/$CURRENT_FILE_ID
+
+# Add info to .trash.log file
+# the structure of file is
+# fileToDeletePath:fileInTrashId
+echo "${fileToDeletePath}:${CURRENT_FILE_ID}" >> $logFilePath
 
 # remove file
 rm $fileToDeletePath
