@@ -1,0 +1,2 @@
+# rmtrash
+rmtrash bash script
