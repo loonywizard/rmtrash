@@ -13,13 +13,18 @@ LAST_USED_ID=0
 # User passes filename to delete as first argument
 fileToDeletePath=$(pwd)/$1
 
+# -e file checks if file exists
+if [ ! -e $fileToDeletePath ]; then
+  echo "No such file: "$fileToDeletePath
+  exit
+fi
+
 # if .trash directory doesn't exists
 # -d file checks if file exists and it is a directory 
 if [ ! -d "$trashDirectoryPath" ]; then
   mkdir "$trashDirectoryPath"
 fi
 
-# -e file checks if file exists
 if [ -e "$lastUsedIdPath" ]; then
   LAST_USED_ID=$(cat $lastUsedIdPath)
 fi
