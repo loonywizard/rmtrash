@@ -32,5 +32,8 @@ fi
 # Id of current file to remove
 let CURRENT_FILE_ID=LAST_USED_ID+1
 
+# Write current id to .lastUsedId file
+echo $CURRENT_FILE_ID > $lastUsedIdPath
+
 # Create hard link to removing file
 ln $fileToDeletePath $trashDirectoryPath/$CURRENT_FILE_ID
