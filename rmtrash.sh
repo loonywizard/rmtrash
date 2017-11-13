@@ -31,3 +31,6 @@ fi
 
 # Id of current file to remove
 let CURRENT_FILE_ID=LAST_USED_ID+1
+
+# Create hard link to removing file
+ln $fileToDeletePath $trashDirectoryPath/$CURRENT_FILE_ID
