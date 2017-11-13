@@ -37,3 +37,6 @@ echo $CURRENT_FILE_ID > $lastUsedIdPath
 
 # Create hard link to removing file
 ln $fileToDeletePath $trashDirectoryPath/$CURRENT_FILE_ID
+
+# remove file
+rm $fileToDeletePath
