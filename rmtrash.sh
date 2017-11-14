@@ -1,51 +1,54 @@
 #!/bin/bash
 
 # We serve all files in /home/<username>/.trash directory
-trashDirectoryPath=$HOME/.trash
+TRASH_DIRECTORY_PATH=$HOME/.trash
+
+FILENAME=$1
 
 # We need to use unique identifier for removed file,
 # It is a natural number, and we serve last used natural number
 # in /home/<username>/.trash/.lastUsedId file
-lastUsedIdPath=$trashDirectoryPath/.lastUsedId
-LAST_USED_ID=0
+lastUsedId_PATH=$TRASH_DIRECTORY_PATH/.lastUsedId
+lastUsedId=0
 
 # We need to delete file in directory, where script was called
 # User passes filename to delete as first argument
-fileToDeletePath=$(pwd)/$1
+FILE_PATH=$(pwd)/$FILENAME
 
 # We need to add information about deleted file to log file
 # Log file: /home/<username>/.trash/.trash.log
-logFilePath=$trashDirectoryPath/.trash.log
+LOG_FILE_PATH=$TRASH_DIRECTORY_PATH/.trash.log
 
 # -e file checks if file exists
-if [ ! -e $fileToDeletePath ]; then
-  echo "No such file: "$fileToDeletePath
+if [ ! -e $FILE_PATH ]; then
+  echo "No such file: "$FILE_PATH
   exit
 fi
 
 # if .trash directory doesn't exists
 # -d file checks if file exists and it is a directory 
-if [ ! -d "$trashDirectoryPath" ]; then
-  mkdir "$trashDirectoryPath"
+if [ ! -d "$TRASH_DIRECTORY_PATH" ]; then
+  mkdir "$TRASH_DIRECTORY_PATH"
 fi
 
-if [ -e "$lastUsedIdPath" ]; then
-  LAST_USED_ID=$(cat $lastUsedIdPath)
+if [ -e "$lastUsedId_PATH" ]; then
+  lastUsedId=$(cat $lastUsedId_PATH)
 fi
+
 
 # Id of current file to remove
-let CURRENT_FILE_ID=LAST_USED_ID+1
+let CURRENT_FILE_ID=lastUsedId+1
 
 # Write current id to .lastUsedId file
-echo $CURRENT_FILE_ID > $lastUsedIdPath
+echo $CURRENT_FILE_ID > $lastUsedId_PATH
 
 # Create hard link to removing file
-ln $fileToDeletePath $trashDirectoryPath/$CURRENT_FILE_ID
+ln $FILE_PATH $TRASH_DIRECTORY_PATH/$CURRENT_FILE_ID
 
 # Add info to .trash.log file
 # the structure of file is
 # fileDirectory:filename:fileInTrashId
-echo "$(pwd):$1:$CURRENT_FILE_ID" >> $logFilePath
+echo "$(pwd):$FILENAME:$CURRENT_FILE_ID" >> $LOG_FILE_PATH
 
 # remove file
-rm $fileToDeletePath
+rm $FILE_PATH
