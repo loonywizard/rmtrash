@@ -6,6 +6,8 @@ LOG_FILE_PATH=$TRASH_DIRECTORY_PATH/.trash.log
 
 LOG_FILE_DATA="$(< $LOG_FILE_PATH)"
 
+index=1
+
 for line in $LOG_FILE_DATA; do
   # -F in awk is --field-separator
   directory=$(echo $line | awk -F':' '{ print $1 }')
@@ -31,6 +33,11 @@ for line in $LOG_FILE_DATA; do
 
       # create hard link
       ln $TRASH_DIRECTORY_PATH/$FILE_ID $directory/$FILENAME
+
+      # remove a line from log file
+      echo "$(sed "${index} d" $LOG_FILE_PATH)" > $LOG_FILE_PATH
     fi
   fi
+
+  let index=$index+1
 done
