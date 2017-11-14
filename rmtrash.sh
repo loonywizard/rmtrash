@@ -44,8 +44,8 @@ ln $fileToDeletePath $trashDirectoryPath/$CURRENT_FILE_ID
 
 # Add info to .trash.log file
 # the structure of file is
-# fileToDeletePath:fileInTrashId
-echo "${fileToDeletePath}:${CURRENT_FILE_ID}" >> $logFilePath
+# fileDirectory:filename:fileInTrashId
+echo "$(pwd):$1:$CURRENT_FILE_ID" >> $logFilePath
 
 # remove file
 rm $fileToDeletePath
