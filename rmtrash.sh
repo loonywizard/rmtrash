@@ -31,6 +31,12 @@ if [ ! -e "$FILE_PATH" ]; then
   exit
 fi
 
+# check if user is trying to remove directory
+if [ -d "$FILE_PATH" ]; then
+  echo "Cannot delete a directory, aborting"
+  exit
+fi
+
 # if .trash directory doesn't exists
 # -d file checks if file exists and it is a directory 
 if [ ! -d "$TRASH_DIRECTORY_PATH" ]; then
@@ -40,7 +46,6 @@ fi
 if [ -e "$lastUsedId_PATH" ]; then
   lastUsedId=$(cat $lastUsedId_PATH)
 fi
-
 
 # Id of current file to remove
 let CURRENT_FILE_ID=lastUsedId+1
