@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILENAME_TO_RESTORE=$1
+FILENAME_TO_RESTORE="$1"
 TRASH_DIRECTORY_PATH=$HOME/.trash
 LOG_FILE_PATH=$TRASH_DIRECTORY_PATH/.trash.log
 
@@ -10,11 +10,11 @@ index=1
 
 for line in $LOG_FILE_DATA; do
   # -F in awk is --field-separator
-  directory=$(echo $line | awk -F':' '{ print $1 }')
-  FILENAME=$(echo $line | awk -F':' '{ print $2 }')
-  FILE_ID=$(echo $line | awk -F':' '{ print $3 }')
+  directory=$(echo "$line" | awk -F':' '{ print $1 }')
+  FILENAME=$(echo "$line" | awk -F':' '{ print $2 }')
+  FILE_ID=$(echo "$line" | awk -F':' '{ print $3 }')
 
-  if [ $FILENAME_TO_RESTORE == $FILENAME ]; then
+  if [ "$FILENAME_TO_RESTORE" == "$FILENAME" ]; then
     read -p "Do you want to restore "$directory"/"$FILENAME"? [Y/n]" response
     
     if [ $(echo $response | awk '{ print toupper($0) }') == "Y" ]; then
@@ -26,13 +26,13 @@ for line in $LOG_FILE_DATA; do
       fi
 
       # check if there's already file with that filename
-      if [ -e $directory"/"$FILENAME ]; then
-        echo "$directory"/"$FILENAME is already exists, aborting"
+      if [ -e $directory"/""$FILENAME" ]; then
+        echo "$directory"/""$FILENAME" is already exists, aborting"
         exit
       fi
 
       # create hard link
-      ln $TRASH_DIRECTORY_PATH/$FILE_ID $directory/$FILENAME
+      ln "$TRASH_DIRECTORY_PATH/$FILE_ID" "$directory/$FILENAME"
 
       # remove a line from log file
       echo "$(sed "${index} d" $LOG_FILE_PATH)" > $LOG_FILE_PATH

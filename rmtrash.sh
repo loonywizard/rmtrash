@@ -54,7 +54,7 @@ let CURRENT_FILE_ID=lastUsedId+1
 echo $CURRENT_FILE_ID > $lastUsedId_PATH
 
 # Create hard link to removing file
-ln $FILE_PATH $TRASH_DIRECTORY_PATH/$CURRENT_FILE_ID
+ln "$FILE_PATH" "$TRASH_DIRECTORY_PATH/$CURRENT_FILE_ID"
 
 # Add info to .trash.log file
 # the structure of file is
@@ -62,4 +62,4 @@ ln $FILE_PATH $TRASH_DIRECTORY_PATH/$CURRENT_FILE_ID
 echo "$(pwd):$FILENAME:$CURRENT_FILE_ID" >> $LOG_FILE_PATH
 
 # remove file
-rm $FILE_PATH
+rm "$FILE_PATH"
