@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# if there's more that one argument or less
+if [ $# -ne 1 ]; then
+  echo "Program needs only one argument, aborting"
+  exit
+fi
+
 # We serve all files in /home/<username>/.trash directory
 TRASH_DIRECTORY_PATH=$HOME/.trash
 
@@ -20,7 +26,7 @@ FILE_PATH=$(pwd)/$FILENAME
 LOG_FILE_PATH=$TRASH_DIRECTORY_PATH/.trash.log
 
 # -e file checks if file exists
-if [ ! -e $FILE_PATH ]; then
+if [ ! -e "$FILE_PATH" ]; then
   echo "No such file: "$FILE_PATH
   exit
 fi
