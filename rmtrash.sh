@@ -14,7 +14,7 @@ FILENAME=$1
 # We need to use unique identifier for removed file,
 # It is a natural number, and we serve last used natural number
 # in /home/<username>/.trash/.lastUsedId file
-lastUsedId_PATH=$TRASH_DIRECTORY_PATH/.lastUsedId
+LAST_USED_ID_PATH=$TRASH_DIRECTORY_PATH/.lastUsedId
 lastUsedId=0
 
 # We need to delete file in directory, where script was called
@@ -43,15 +43,15 @@ if [ ! -d "$TRASH_DIRECTORY_PATH" ]; then
   mkdir "$TRASH_DIRECTORY_PATH"
 fi
 
-if [ -e "$lastUsedId_PATH" ]; then
-  lastUsedId=$(cat $lastUsedId_PATH)
+if [ -e "$LAST_USED_ID_PATH" ]; then
+  lastUsedId=$(cat $LAST_USED_ID_PATH)
 fi
 
 # Id of current file to remove
 let CURRENT_FILE_ID=lastUsedId+1
 
 # Write current id to .lastUsedId file
-echo $CURRENT_FILE_ID > $lastUsedId_PATH
+echo $CURRENT_FILE_ID > $LAST_USED_ID_PATH
 
 # Create hard link to removing file
 ln "$FILE_PATH" "$TRASH_DIRECTORY_PATH/$CURRENT_FILE_ID"
